@@ -94,7 +94,7 @@ public class ReshapePreprocessor extends BaseInputPreProcessor {
 
     private static long[] prependMiniBatchSize(long[] shape, long miniBatchSize) {
         int shapeLength = shape.length;
-        val miniBatchShape = new long[shapeLength + 1];
+        long[] miniBatchShape = new long[shapeLength + 1];
         miniBatchShape[0] = miniBatchSize;
         for (int i = 1; i < miniBatchShape.length; i++) {
             miniBatchShape[i] = shape[i - 1];
@@ -106,7 +106,8 @@ public class ReshapePreprocessor extends BaseInputPreProcessor {
     public INDArray preProcess(INDArray input, int miniBatchSize, LayerWorkspaceMgr workspaceMgr) {
         // the target shape read from a keras config does not have mini-batch size included. We prepend it here dynamically.
         long[] targetShape = getShape(this.targetShape, miniBatchSize);
-        long[] inputShape = getShape(this.inputShape, miniBatchSize);
+        //long[] inputShape = getShape(this.inputShape, miniBatchSize);
+        targetShape[0] = input.shape()[0];
 
         if (prodLong(input.shape()) == prodLong((targetShape))) {
             if (input.ordering() != 'c' || !Shape.hasDefaultStridesForShape(input)) {
