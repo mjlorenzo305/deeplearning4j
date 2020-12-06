@@ -108,6 +108,7 @@ public class ReshapePreprocessor extends BaseInputPreProcessor {
         long[] targetShape = getShape(this.targetShape, miniBatchSize);
         //long[] inputShape = getShape(this.inputShape, miniBatchSize);
         targetShape[0] = input.shape()[0];
+        System.out.println(">>>preProcess() target: "+Arrays.toString(targetShape)+" input:"+Arrays.toString(input.shape()));
 
         if (prodLong(input.shape()) == prodLong((targetShape))) {
             if (input.ordering() != 'c' || !Shape.hasDefaultStridesForShape(input)) {

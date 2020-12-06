@@ -42,6 +42,20 @@ public class MergeVertex extends GraphVertex {
 
     protected int mergeAxis = 1;       //default value for backward compatibility (deserialization of old version JSON) - NCHW and NCW format
 
+    private int overrideMergeAxis = -1;
+
+    public MergeVertex() {
+        this.overrideMergeAxis = 1;
+        this.mergeAxis = 1;
+    }
+
+    public MergeVertex(int mergeAxisDim) {
+        this.overrideMergeAxis = mergeAxisDim;
+        this.mergeAxis = mergeAxisDim;
+        System.out.println("MergeVertex() "+overrideMergeAxis);
+    }
+
+
     @Override
     public MergeVertex clone() {
         return new MergeVertex();
@@ -80,7 +94,8 @@ public class MergeVertex extends GraphVertex {
     @Override
     public org.deeplearning4j.nn.graph.vertex.GraphVertex instantiate(ComputationGraph graph, String name, int idx,
                                                                       INDArray paramsView, boolean initializeParams, DataType networkDatatype) {
-        return new org.deeplearning4j.nn.graph.vertex.impl.MergeVertex(graph, name, idx, networkDatatype, mergeAxis);
+        System.out.println("Merge Axis: "+overrideMergeAxis+" "+mergeAxis);                                                        
+        return new org.deeplearning4j.nn.graph.vertex.impl.MergeVertex(graph, name, idx, networkDatatype, overrideMergeAxis == -1 ? mergeAxis : overrideMergeAxis);
     }
 
     @Override
